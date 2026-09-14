@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Course Scheduler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- مكتبة تحويل الـ HTML إلى صورة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-titles">
+            <h1>Semester Schedule Builder</h1>
+            <p>Drag your courses into the valid highlighted slots. Return them to the pool at any time.</p>
+        </div>
+        <div class="header-actions">
+            <button id="add-custom-btn" class="add-btn">+ Add Custom Course</button>
+            <button id="export-btn" class="export-btn">Export Image</button>
+            <button id="reset-btn" class="reset-btn">Reset Schedule</button>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Schedule Grid -->
+        <section class="schedule-section" id="schedule-capture-area">
+            <div class="schedule-grid">
+                <div class="grid-header time-col">Time</div>
+                <div class="grid-header">Sunday</div>
+                <div class="grid-header">Monday</div>
+                <div class="grid-header">Tuesday</div>
+                <div class="grid-header">Wednesday</div>
+                <div class="grid-header">Thursday</div>
+
+                <div class="time-label">8:00 AM - 10:00 AM</div>
+                <div class="time-slot" data-slot-id="sun-8"></div>
+                <div class="time-slot" data-slot-id="mon-8"></div>
+                <div class="time-slot" data-slot-id="tue-8"></div>
+                <div class="time-slot" data-slot-id="wed-8"></div>
+                <div class="time-slot" data-slot-id="thu-8"></div>
+
+                <div class="time-label">10:00 AM - 12:00 PM</div>
+                <div class="time-slot" data-slot-id="sun-10"></div>
+                <div class="time-slot" data-slot-id="mon-10"></div>
+                <div class="time-slot" data-slot-id="tue-10"></div>
+                <div class="time-slot" data-slot-id="wed-10"></div>
+                <div class="time-slot" data-slot-id="thu-10"></div>
+
+                <div class="time-label">12:00 PM - 2:00 PM</div>
+                <div class="time-slot" data-slot-id="sun-12"></div>
+                <div class="time-slot" data-slot-id="mon-12"></div>
+                <div class="time-slot" data-slot-id="tue-12"></div>
+                <div class="time-slot" data-slot-id="wed-12"></div>
+                <div class="time-slot" data-slot-id="thu-12"></div>
+
+                <div class="time-label">2:00 PM - 4:00 PM</div>
+                <div class="time-slot" data-slot-id="sun-14"></div>
+                <div class="time-slot" data-slot-id="mon-14"></div>
+                <div class="time-slot" data-slot-id="tue-14"></div>
+                <div class="time-slot" data-slot-id="wed-14"></div>
+                <div class="time-slot" data-slot-id="thu-14"></div>
+
+                <div class="time-label">4:00 PM - 6:00 PM</div>
+                <div class="time-slot" data-slot-id="sun-16"></div>
+                <div class="time-slot" data-slot-id="mon-16"></div>
+                <div class="time-slot" data-slot-id="tue-16"></div>
+                <div class="time-slot" data-slot-id="wed-16"></div>
+                <div class="time-slot" data-slot-id="thu-16"></div>
+
+                <div class="time-label">6:00 PM - 8:00 PM</div>
+                <div class="time-slot" data-slot-id="sun-18"></div>
+                <div class="time-slot" data-slot-id="mon-18"></div>
+                <div class="time-slot" data-slot-id="tue-18"></div>
+                <div class="time-slot" data-slot-id="wed-18"></div>
+                <div class="time-slot" data-slot-id="thu-18"></div>
+            </div>
+        </section>
+
+        <!-- Drag Pool Sidebar -->
+        <aside class="sidebar-pool">
+            <!-- Lectures Column -->
+            <div class="pool-category">
+                <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <span class="header-text">Lectures</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="pool-container" id="lectures-pool">
+                    <div class="subject-card csai201" draggable="true" id="csai201-lec" data-default="Multiple Options">
+                        <div class="card-header"><span class="code">CSAI 201</span><span class="type">Lecture</span></div>
+                        <div class="title">Data Structures</div>
+                        <div class="instructor">Multiple Options</div>
+                    </div>
+                    <div class="subject-card csai202" draggable="true" id="csai202-lec" data-default="Multiple Options">
+                        <div class="card-header"><span class="code">CSAI 202</span><span class="type">Lecture</span></div>
+                        <div class="title">Database Systems</div>
+                        <div class="instructor">Multiple Options</div>
+                    </div>
+                    <div class="subject-card dsai203" draggable="true" id="dsai203-lec" data-default="Multiple Options">
+                        <div class="card-header"><span class="code">DSAI 203</span><span class="type">Lecture</span></div>
+                        <div class="title">Data Integration</div>
+                        <div class="instructor">Multiple Options</div>
+                    </div>
+                    <div class="subject-card csai205" draggable="true" id="csai205-lec" data-default="Dr. Mohamed Maher Ata">
+                        <div class="card-header"><span class="code">CSAI 205</span><span class="type">Lecture</span></div>
+                        <div class="title">Circuits & Electronics</div>
+                        <div class="instructor">Dr. Mohamed Maher Ata</div>
+                    </div>
+                    <div class="subject-card math105" draggable="true" id="math105-lec" data-default="Multiple Options">
+                        <div class="card-header"><span class="code">MATH 105</span><span class="type">Lecture</span></div>
+                        <div class="title">Probability & Statistics</div>
+                        <div class="instructor">Multiple Options</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Labs & Tutorials Column -->
+            <div class="pool-category">
+                <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <span class="header-text">Labs & Tutorials</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="pool-container" id="labs-pool">
+                    <div class="subject-card csai201" draggable="true" id="csai201-lab" data-default="Lab Instructors">
+                        <div class="card-header"><span class="code">CSAI 201</span><span class="type">Lab</span></div>
+                        <div class="title">Data Structures</div>
+                        <div class="instructor">Lab Instructors</div>
+                    </div>
+                    <div class="subject-card csai202" draggable="true" id="csai202-lab" data-default="Lab Instructors">
+                        <div class="card-header"><span class="code">CSAI 202</span><span class="type">Lab</span></div>
+                        <div class="title">Database Systems</div>
+                        <div class="instructor">Lab Instructors</div>
+                    </div>
+                    <div class="subject-card dsai203" draggable="true" id="dsai203-lab" data-default="Lab Instructors">
+                        <div class="card-header"><span class="code">DSAI 203</span><span class="type">Lab</span></div>
+                        <div class="title">Data Integration</div>
+                        <div class="instructor">Lab Instructors</div>
+                    </div>
+                    <div class="subject-card csai205" draggable="true" id="csai205-lab" data-default="Lab Instructors">
+                        <div class="card-header"><span class="code">CSAI 205</span><span class="type">Lab</span></div>
+                        <div class="title">Circuits & Electronics</div>
+                        <div class="instructor">Lab Instructors</div>
+                    </div>
+                    <div class="subject-card math105" draggable="true" id="math105-tut" data-default="Tutorial Instructors">
+                        <div class="card-header"><span class="code">MATH 105</span><span class="type">Tutorial</span></div>
+                        <div class="title">Probability & Statistics</div>
+                        <div class="instructor">Tutorial Instructors</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCH Courses Column -->
+            <div class="pool-category">
+                <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <span class="header-text">SCH Courses</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="pool-scroll-wrapper">
+                    <div class="sub-category-title">★ Required</div>
+                    <div class="pool-container" id="sch-req-pool" style="min-height: auto; margin-bottom: 12px;">
+                        <div class="subject-card sch req-course" draggable="true" id="sch163" data-default="Sherif Hamdy ElGohary">
+                            <div class="card-header"><span class="code">SCH 163</span><span class="type">Lecture</span></div>
+                            <div class="title">Sustain, Social & Ethical Issues</div>
+                            <div class="instructor">Sherif Hamdy ElGohary</div>
+                        </div>
+                        <div class="subject-card sch req-course" draggable="true" id="sch261" data-default="Hassan Darwish">
+                            <div class="card-header"><span class="code">SCH 261</span><span class="type">Lecture</span></div>
+                            <div class="title">Engineering Project Management</div>
+                            <div class="instructor">Hassan Darwish</div>
+                        </div>
+                        <div class="subject-card sch req-course" draggable="true" id="sch264" data-default="Sherif Hamdy ElGohary">
+                            <div class="card-header"><span class="code">SCH 264</span><span class="type">Lecture</span></div>
+                            <div class="title">Intro to Entrepreneurship</div>
+                            <div class="instructor">Sherif Hamdy ElGohary</div>
+                        </div>
+                    </div>
+
+                    <div class="sub-category-title elective-title">Electives</div>
+                    <div class="pool-container" id="sch-elec-pool">
+                        <div class="subject-card sch" draggable="true" id="sch105" data-default="Ahmed Hamdy">
+                            <div class="card-header"><span class="code">SCH 105</span><span class="type">Lecture</span></div>
+                            <div class="title">Critical Thinking</div>
+                            <div class="instructor">Ahmed Hamdy</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch110" data-default="Ahmed Hamdy">
+                            <div class="card-header"><span class="code">SCH 110</span><span class="type">Lecture</span></div>
+                            <div class="title">Creativity and Innovation</div>
+                            <div class="instructor">Ahmed Hamdy</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch201" data-default="Loubna Abdeltawab">
+                            <div class="card-header"><span class="code">SCH 201</span><span class="type">Lecture</span></div>
+                            <div class="title">World Literature</div>
+                            <div class="instructor">Loubna Abdeltawab</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch244" data-default="Hassan Darwish">
+                            <div class="card-header"><span class="code">SCH 244</span><span class="type">Lecture</span></div>
+                            <div class="title">Leadership & Professionalism</div>
+                            <div class="instructor">Hassan Darwish</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch258" data-default="Samy Ahmed">
+                            <div class="card-header"><span class="code">SCH 258</span><span class="type">Lecture</span></div>
+                            <div class="title">Arabic Literature</div>
+                            <div class="instructor">Samy Ahmed</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch260" data-default="Ahmed Hamdy">
+                            <div class="card-header"><span class="code">SCH 260</span><span class="type">Lecture</span></div>
+                            <div class="title">Philosophical Thinking</div>
+                            <div class="instructor">Ahmed Hamdy</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch262" data-default="Sherif Hamdy ElGohary">
+                            <div class="card-header"><span class="code">SCH 262</span><span class="type">Lecture</span></div>
+                            <div class="title">Engineering Project Economics</div>
+                            <div class="instructor">Sherif Hamdy ElGohary</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch263" data-default="TBA">
+                            <div class="card-header"><span class="code">SCH 263</span><span class="type">Lecture</span></div>
+                            <div class="title">Engineering Ethics & Safety</div>
+                            <div class="instructor">TBA</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch266" data-default="Ahmed Hamdy">
+                            <div class="card-header"><span class="code">SCH 266</span><span class="type">Lecture</span></div>
+                            <div class="title">Sociology</div>
+                            <div class="instructor">Ahmed Hamdy</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch273" data-default="Nashwa Abdel Tawab">
+                            <div class="card-header"><span class="code">SCH 273</span><span class="type">Lecture</span></div>
+                            <div class="title">Cognitive Psychology</div>
+                            <div class="instructor">Nashwa Abdel Tawab</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch275" data-default="Hassan Darwish">
+                            <div class="card-header"><span class="code">SCH 275</span><span class="type">Lecture</span></div>
+                            <div class="title">The Creative Mind</div>
+                            <div class="instructor">Hassan Darwish</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch277" data-default="Nashwa Abdel Tawab">
+                            <div class="card-header"><span class="code">SCH 277</span><span class="type">Lecture</span></div>
+                            <div class="title">Positive Psychology</div>
+                            <div class="instructor">Nashwa Abdel Tawab</div>
+                        </div>
+                        <div class="subject-card sch" draggable="true" id="sch299" data-default="Elhassan Elsabry">
+                            <div class="card-header"><span class="code">SCH 299</span><span class="type">Lecture</span></div>
+                            <div class="title">Special Topics in Humanities</div>
+                            <div class="instructor">Elhassan Elsabry</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Courses Column -->
+            <div class="pool-category">
+                <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <span class="header-text">Custom Courses</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="pool-scroll-wrapper">
+                    <div class="pool-container" id="custom-pool">
+                        <!-- Custom courses will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Modal for Adding Custom Course -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Add Custom Course</h2>
+            <form id="custom-form">
+                <div class="form-group">
+                    <label>Course Name <span style="color:red">*</span></label>
+                    <input type="text" id="cc-name" required placeholder="e.g., English 101">
+                </div>
+                <div class="form-group">
+                    <label>Course Code (Optional)</label>
+                    <input type="text" id="cc-code" placeholder="e.g., ENG101">
+                </div>
+                <div class="form-group">
+                    <label>Instructor (Optional)</label>
+                    <input type="text" id="cc-instructor" placeholder="e.g., Dr. Smith">
+                </div>
+                <div class="form-group">
+                    <label>Available Times <span style="color:red">*</span></label>
+                    <span class="help-text">Hold Ctrl/Cmd to select multiple slots</span>
+                    <select id="cc-slots" multiple required size="6">
+                        <optgroup label="Sunday">
+                            <option value="sun-8">Sun 8:00 AM</option>
+                            <option value="sun-10">Sun 10:00 AM</option>
+                            <option value="sun-12">Sun 12:00 PM</option>
+                            <option value="sun-14">Sun 2:00 PM</option>
+                            <option value="sun-16">Sun 4:00 PM</option>
+                            <option value="sun-18">Sun 6:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Monday">
+                            <option value="mon-8">Mon 8:00 AM</option>
+                            <option value="mon-10">Mon 10:00 AM</option>
+                            <option value="mon-12">Mon 12:00 PM</option>
+                            <option value="mon-14">Mon 2:00 PM</option>
+                            <option value="mon-16">Mon 4:00 PM</option>
+                            <option value="mon-18">Mon 6:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Tuesday">
+                            <option value="tue-8">Tue 8:00 AM</option>
+                            <option value="tue-10">Tue 10:00 AM</option>
+                            <option value="tue-12">Tue 12:00 PM</option>
+                            <option value="tue-14">Tue 2:00 PM</option>
+                            <option value="tue-16">Tue 4:00 PM</option>
+                            <option value="tue-18">Tue 6:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Wednesday">
+                            <option value="wed-8">Wed 8:00 AM</option>
+                            <option value="wed-10">Wed 10:00 AM</option>
+                            <option value="wed-12">Wed 12:00 PM</option>
+                            <option value="wed-14">Wed 2:00 PM</option>
+                            <option value="wed-16">Wed 4:00 PM</option>
+                            <option value="wed-18">Wed 6:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Thursday">
+                            <option value="thu-8">Thu 8:00 AM</option>
+                            <option value="thu-10">Thu 10:00 AM</option>
+                            <option value="thu-12">Thu 12:00 PM</option>
+                            <option value="thu-14">Thu 2:00 PM</option>
+                            <option value="thu-16">Thu 4:00 PM</option>
+                            <option value="thu-18">Thu 6:00 PM</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cc-cancel" class="btn-cancel">Cancel</button>
+                    <button type="submit" class="btn-submit">Add Course</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
