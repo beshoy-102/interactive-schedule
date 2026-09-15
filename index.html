@@ -1,11 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Course Scheduler</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- مكتبة تحويل الـ HTML إلى صورة -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -23,7 +22,6 @@
     </header>
 
     <main class="app-container">
-        <!-- Schedule Grid -->
         <section class="schedule-section" id="schedule-capture-area">
             <div class="schedule-grid">
                 <div class="grid-header time-col">Time</div>
@@ -77,9 +75,7 @@
             </div>
         </section>
 
-        <!-- Drag Pool Sidebar -->
         <aside class="sidebar-pool">
-            <!-- Lectures Column -->
             <div class="pool-category">
                 <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
                     <span class="header-text">Lectures</span>
@@ -114,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- Labs & Tutorials Column -->
             <div class="pool-category">
                 <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
                     <span class="header-text">Labs & Tutorials</span>
@@ -149,7 +144,6 @@
                 </div>
             </div>
 
-            <!-- SCH Courses Column -->
             <div class="pool-category">
                 <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
                     <span class="header-text">SCH Courses</span>
@@ -246,22 +240,18 @@
                 </div>
             </div>
 
-            <!-- Custom Courses Column -->
             <div class="pool-category">
                 <div class="pool-header" onclick="this.parentElement.classList.toggle('collapsed')">
                     <span class="header-text">Custom Courses</span>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="pool-scroll-wrapper">
-                    <div class="pool-container" id="custom-pool">
-                        <!-- Custom courses will be dynamically added here -->
-                    </div>
+                    <div class="pool-container" id="custom-pool"></div>
                 </div>
             </div>
         </aside>
     </main>
 
-    <!-- Modal for Adding Custom Course -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>Add Custom Course</h2>
@@ -270,9 +260,22 @@
                     <label>Course Name <span style="color:red">*</span></label>
                     <input type="text" id="cc-name" required placeholder="e.g., English 101">
                 </div>
-                <div class="form-group">
-                    <label>Course Code (Optional)</label>
-                    <input type="text" id="cc-code" placeholder="e.g., ENG101">
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label>Course Code (Optional)</label>
+                        <input type="text" id="cc-code" placeholder="e.g., ENG101">
+                    </div>
+                    <div class="form-group half-width">
+                        <label>Course Type <span style="color:red">*</span></label>
+                        <select id="cc-type" required>
+                            <option value="Lecture">Lecture</option>
+                            <option value="Lab">Lab</option>
+                            <option value="Tutorial">Tutorial</option>
+                            <option value="SCH">SCH</option>
+                            <option value="English">English</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Instructor (Optional)</label>
@@ -280,49 +283,53 @@
                 </div>
                 <div class="form-group">
                     <label>Available Times <span style="color:red">*</span></label>
-                    <span class="help-text">Hold Ctrl/Cmd to select multiple slots</span>
-                    <select id="cc-slots" multiple required size="6">
-                        <optgroup label="Sunday">
-                            <option value="sun-8">Sun 8:00 AM</option>
-                            <option value="sun-10">Sun 10:00 AM</option>
-                            <option value="sun-12">Sun 12:00 PM</option>
-                            <option value="sun-14">Sun 2:00 PM</option>
-                            <option value="sun-16">Sun 4:00 PM</option>
-                            <option value="sun-18">Sun 6:00 PM</option>
-                        </optgroup>
-                        <optgroup label="Monday">
-                            <option value="mon-8">Mon 8:00 AM</option>
-                            <option value="mon-10">Mon 10:00 AM</option>
-                            <option value="mon-12">Mon 12:00 PM</option>
-                            <option value="mon-14">Mon 2:00 PM</option>
-                            <option value="mon-16">Mon 4:00 PM</option>
-                            <option value="mon-18">Mon 6:00 PM</option>
-                        </optgroup>
-                        <optgroup label="Tuesday">
-                            <option value="tue-8">Tue 8:00 AM</option>
-                            <option value="tue-10">Tue 10:00 AM</option>
-                            <option value="tue-12">Tue 12:00 PM</option>
-                            <option value="tue-14">Tue 2:00 PM</option>
-                            <option value="tue-16">Tue 4:00 PM</option>
-                            <option value="tue-18">Tue 6:00 PM</option>
-                        </optgroup>
-                        <optgroup label="Wednesday">
-                            <option value="wed-8">Wed 8:00 AM</option>
-                            <option value="wed-10">Wed 10:00 AM</option>
-                            <option value="wed-12">Wed 12:00 PM</option>
-                            <option value="wed-14">Wed 2:00 PM</option>
-                            <option value="wed-16">Wed 4:00 PM</option>
-                            <option value="wed-18">Wed 6:00 PM</option>
-                        </optgroup>
-                        <optgroup label="Thursday">
-                            <option value="thu-8">Thu 8:00 AM</option>
-                            <option value="thu-10">Thu 10:00 AM</option>
-                            <option value="thu-12">Thu 12:00 PM</option>
-                            <option value="thu-14">Thu 2:00 PM</option>
-                            <option value="thu-16">Thu 4:00 PM</option>
-                            <option value="thu-18">Thu 6:00 PM</option>
-                        </optgroup>
-                    </select>
+                    <div class="slots-checkbox-grid">
+                        <div class="day-group">
+                            <div class="day-title">Sunday</div>
+                            <label><input type="checkbox" name="cc-slot" value="sun-8"> 8:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="sun-10"> 10:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="sun-12"> 12:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="sun-14"> 2:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="sun-16"> 4:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="sun-18"> 6:00 PM</label>
+                        </div>
+                        <div class="day-group">
+                            <div class="day-title">Monday</div>
+                            <label><input type="checkbox" name="cc-slot" value="mon-8"> 8:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="mon-10"> 10:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="mon-12"> 12:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="mon-14"> 2:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="mon-16"> 4:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="mon-18"> 6:00 PM</label>
+                        </div>
+                        <div class="day-group">
+                            <div class="day-title">Tuesday</div>
+                            <label><input type="checkbox" name="cc-slot" value="tue-8"> 8:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="tue-10"> 10:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="tue-12"> 12:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="tue-14"> 2:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="tue-16"> 4:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="tue-18"> 6:00 PM</label>
+                        </div>
+                        <div class="day-group">
+                            <div class="day-title">Wednesday</div>
+                            <label><input type="checkbox" name="cc-slot" value="wed-8"> 8:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="wed-10"> 10:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="wed-12"> 12:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="wed-14"> 2:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="wed-16"> 4:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="wed-18"> 6:00 PM</label>
+                        </div>
+                        <div class="day-group">
+                            <div class="day-title">Thursday</div>
+                            <label><input type="checkbox" name="cc-slot" value="thu-8"> 8:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="thu-10"> 10:00 AM</label>
+                            <label><input type="checkbox" name="cc-slot" value="thu-12"> 12:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="thu-14"> 2:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="thu-16"> 4:00 PM</label>
+                            <label><input type="checkbox" name="cc-slot" value="thu-18"> 6:00 PM</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-actions">
                     <button type="button" id="cc-cancel" class="btn-cancel">Cancel</button>
