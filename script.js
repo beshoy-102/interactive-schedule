@@ -1,32 +1,143 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
-    // Valid options dictionary
+document.addEventListener('DOMContentLoaded', () => {
     const validOptions = {
-        "csai201-lec": [{ slotId: "tue-12", label: "Dr. Mayada Mansour\nSec 01" }, { slotId: "tue-14", label: "Dr. Mohamed Elhalaby\nSec 02" }, { slotId: "wed-10", label: "Dr. Mohamed Elhalaby\nSec 03" }],
-        "csai201-lab": [{ slotId: "wed-14", label: "Sec 01" }, { slotId: "wed-10", label: "Sec 02" }, { slotId: "wed-14", label: "Sec 03" }, { slotId: "wed-10", label: "Sec 04" }, { slotId: "wed-16", label: "Sec 05" }, { slotId: "wed-14", label: "Sec 06" }, { slotId: "sun-12", label: "Sec 07" }, { slotId: "sun-8", label: "Sec 08" }, { slotId: "mon-14", label: "Sec 09" }, { slotId: "tue-10", label: "Sec 10" }, { slotId: "sun-8", label: "Sec 11" }, { slotId: "sun-12", label: "Sec 12" }],
-        "csai202-lec": [{ slotId: "mon-10", label: "Dr. Yousry Abdelazeem\nSec 01" }, { slotId: "mon-16", label: "Dr. Yousry Abdelazeem\nSec 02" }, { slotId: "sun-10", label: "Dr. Ashraf Hendam\nSec 03" }],
-        "csai202-lab": [{ slotId: "tue-14", label: "Sec 01" }, { slotId: "tue-10", label: "Sec 02" }, { slotId: "tue-10", label: "Sec 03" }, { slotId: "tue-10", label: "Sec 04" }, { slotId: "tue-12", label: "Sec 05" }, { slotId: "wed-10", label: "Sec 06" }, { slotId: "wed-16", label: "Sec 07" }, { slotId: "wed-8", label: "Sec 08" }],
-        "math105-lec": [{ slotId: "tue-8", label: "Dr. Walaa El-Sharkawy\nSec 01" }, { slotId: "wed-14", label: "Dr. Mohamed Fawzy\nSec 02" }],
-        "math105-tut": [{ slotId: "tue-12", label: "Sec 01" }, { slotId: "wed-16", label: "Sec 02" }, { slotId: "tue-14", label: "Sec 03" }, { slotId: "sun-8", label: "Sec 04" }, { slotId: "tue-8", label: "Sec 05" }, { slotId: "sun-12", label: "Sec 06" }],
-        "csai205-lec": [{ slotId: "mon-8", label: "Dr. Mohamed Maher Ata\nSec 01" }, { slotId: "mon-14", label: "Dr. Mohamed Maher Ata\nSec 02" }, { slotId: "tue-10", label: "Dr. Mohamed Maher Ata\nSec 03" }],
-        "csai205-lab": [{ slotId: "tue-8", label: "Sec 01" }, { slotId: "tue-10", label: "Sec 02" }, { slotId: "tue-16", label: "Sec 03" }, { slotId: "wed-10", label: "Sec 04" }, { slotId: "sun-10", label: "Sec 05" }, { slotId: "sun-12", label: "Sec 06" }, { slotId: "sun-8", label: "Sec 07" }, { slotId: "sun-10", label: "Sec 08" }, { slotId: "sun-12", label: "Sec 09" }, { slotId: "sun-14", label: "Sec 10" }, { slotId: "mon-14", label: "Sec 11" }, { slotId: "mon-16", label: "Sec 12" }],
-        "dsai203-lec": [{ slotId: "tue-8", label: "Dr. Saeed Mohsen\nSec 01" }, { slotId: "mon-10", label: "Dr. Mohamed Elhalaby\nSec 02" }, { slotId: "mon-8", label: "Dr. Mohamed Elhalaby\nSec 03" }],
-        "dsai203-lab": [{ slotId: "wed-8", label: "Sec 01" }, { slotId: "wed-8", label: "Sec 02" }, { slotId: "wed-10", label: "Sec 03" }, { slotId: "wed-14", label: "Sec 04" }, { slotId: "wed-16", label: "Sec 05" }, { slotId: "tue-8", label: "Sec 06" }, { slotId: "tue-12", label: "Sec 07" }, { slotId: "tue-10", label: "Sec 08" }, { slotId: "wed-10", label: "Sec 09" }, { slotId: "wed-8", label: "Sec 10" }, { slotId: "wed-14", label: "Sec 11" }, { slotId: "wed-16", label: "Sec 12" }],
-        "sch105": [{ slotId: "wed-8", label: "Ahmed Hamdy\nSec 01" }, { slotId: "wed-10", label: "Ahmed Hamdy\nSec 02" }],
-        "sch110": [{ slotId: "tue-8", label: "Ahmed Hamdy\nSec 01" }],
-        "sch163": [{ slotId: "thu-10", label: "Sherif Hamdy ElGohary\nSec 01" }],
-        "sch201": [{ slotId: "sun-8", label: "Loubna Abdeltawab\nSec 01" }],
-        "sch244": [{ slotId: "wed-14", label: "Hassan Darwish\nSec 01" }],
-        "sch258": [{ slotId: "tue-18", label: "Samy Ahmed\nSec 01" }],
-        "sch260": [{ slotId: "tue-10", label: "Ahmed Hamdy\nSec 01" }, { slotId: "tue-12", label: "Ahmed Hamdy\nSec 02" }],
-        "sch261": [{ slotId: "wed-10", label: "Hassan Darwish\nSec 01" }],
-        "sch262": [{ slotId: "tue-10", label: "Sherif Hamdy ElGohary\nSec 01" }],
-        "sch263": [{ slotId: "mon-8", label: "TBA\nSec 01" }],
-        "sch264": [{ slotId: "tue-12", label: "Sherif Hamdy ElGohary\nSec 01" }],
-        "sch266": [{ slotId: "thu-10", label: "Ahmed Hamdy\nSec 01" }],
-        "sch273": [{ slotId: "tue-10", label: "Nashwa Abdel Tawab\nSec 01" }],
-        "sch275": [{ slotId: "sun-10", label: "Hassan Darwish\nSec 01" }],
-        "sch277": [{ slotId: "tue-12", label: "Nashwa Abdel Tawab\nSec 01" }],
-        "sch299": [{ slotId: "mon-14", label: "Elhassan Elsabry\nSec 01" }]
+        "csai201-lec": [
+            { slotId: "tue-12", label: "Dr. Mayada Mansour\nSec 01 · G038B" },
+            { slotId: "tue-14", label: "Dr. Mohamed Elhalaby\nSec 02 · G038B" },
+            { slotId: "wed-8", label: "Dr. Mohamed Elhalaby\nSec 03 · F019-E" }
+        ],
+        "csai201-lab": [
+            { slotId: "wed-14", label: "Sec 01" },
+            { slotId: "wed-10", label: "Sec 02" },
+            { slotId: "wed-14", label: "Sec 03" },
+            { slotId: "wed-10", label: "Sec 04" },
+            { slotId: "wed-16", label: "Sec 05" },
+            { slotId: "wed-14", label: "Sec 06" },
+            { slotId: "sun-12", label: "Sec 07" },
+            { slotId: "sun-8", label: "Sec 08" },
+            { slotId: "mon-14", label: "Sec 09" },
+            { slotId: "tue-10", label: "Sec 10" },
+            { slotId: "sun-8", label: "Sec 11" },
+            { slotId: "sun-12", label: "Sec 12" }
+        ],
+        "csai202-lec": [
+            { slotId: "mon-10", label: "Dr. Yousry Abdelazeem\nSec 01 · G038B" },
+            { slotId: "mon-16", label: "Dr. Yousry Abdelazeem\nSec 02 · G038B" },
+            { slotId: "sun-10", label: "Dr. Ashraf Hendam\nSec 03 · G033B" }
+        ],
+        "csai202-lab": [
+            { slotId: "tue-14", label: "Sec 01" },
+            { slotId: "tue-10", label: "Sec 02" },
+            { slotId: "tue-10", label: "Sec 03" },
+            { slotId: "tue-10", label: "Sec 04" },
+            { slotId: "tue-12", label: "Sec 05" },
+            { slotId: "wed-10", label: "Sec 06" },
+            { slotId: "wed-16", label: "Sec 07" },
+            { slotId: "wed-8", label: "Sec 08" },
+            { slotId: "tue-12", label: "Sec 09" },
+            { slotId: "tue-14", label: "Sec 10" },
+            { slotId: "wed-8", label: "Sec 11" },
+            { slotId: "sun-16", label: "Sec 12" }
+        ],
+        "dsai203-lec": [
+            { slotId: "tue-8", label: "Dr. Saeed Mohsen\nSec 01 · G006-B" },
+            { slotId: "mon-10", label: "Dr. Mohamed Elhalaby\nSec 02 · G033B" },
+            { slotId: "mon-8", label: "Dr. Mohamed Elhalaby\nSec 03 · G033B" }
+        ],
+        "dsai203-lab": [
+            { slotId: "wed-8", label: "Sec 01" },
+            { slotId: "wed-8", label: "Sec 02" },
+            { slotId: "wed-10", label: "Sec 03" },
+            { slotId: "wed-14", label: "Sec 04" },
+            { slotId: "wed-16", label: "Sec 05" },
+            { slotId: "tue-8", label: "Sec 06" },
+            { slotId: "tue-12", label: "Sec 07" },
+            { slotId: "tue-10", label: "Sec 08" },
+            { slotId: "wed-10", label: "Sec 09" },
+            { slotId: "wed-8", label: "Sec 10" },
+            { slotId: "wed-14", label: "Sec 11" },
+            { slotId: "wed-16", label: "Sec 12" }
+        ],
+        "csai205-lec": [
+            { slotId: "mon-8", label: "Dr. Mohamed Maher Ata\nSec 01 · G019-B" },
+            { slotId: "mon-14", label: "Dr. Mohamed Maher Ata\nSec 02 · G025B" },
+            { slotId: "tue-10", label: "Dr. Mohamed Maher Ata\nSec 03 · G006-B" }
+        ],
+        "csai205-lab": [
+            { slotId: "tue-8", label: "Sec 01" },
+            { slotId: "tue-10", label: "Sec 02" },
+            { slotId: "tue-16", label: "Sec 03" },
+            { slotId: "wed-10", label: "Sec 04" },
+            { slotId: "sun-10", label: "Sec 05" },
+            { slotId: "sun-12", label: "Sec 06" },
+            { slotId: "sun-8", label: "Sec 07" },
+            { slotId: "sun-10", label: "Sec 08" },
+            { slotId: "sun-12", label: "Sec 09" },
+            { slotId: "sun-14", label: "Sec 10" },
+            { slotId: "mon-14", label: "Sec 11" },
+            { slotId: "mon-16", label: "Sec 12" }
+        ],
+        "math105-lec": [
+            { slotId: "tue-8", label: "Dr. Walaa El-Sharkawy\nSec 01 · G009-B" },
+            { slotId: "wed-14", label: "Dr. Mohamed Fawzy\nSec 02 · G009-B" }
+        ],
+        "math105-tut": [
+            { slotId: "tue-12", label: "Sec 01" },
+            { slotId: "wed-16", label: "Sec 02" },
+            { slotId: "tue-14", label: "Sec 03" },
+            { slotId: "sun-8", label: "Sec 04" },
+            { slotId: "tue-8", label: "Sec 05" },
+            { slotId: "sun-12", label: "Sec 06" }
+        ],
+        "sch105": [
+            { slotId: "wed-8", label: "Ahmed Hamdy\nSec 01 · F26-B4" },
+            { slotId: "wed-10", label: "Ahmed Hamdy\nSec 02 · F26-B4" }
+        ],
+        "sch110": [
+            { slotId: "tue-8", label: "Ahmed Hamdy\nSec 01 · F26-B4" }
+        ],
+        "sch163": [
+            { slotId: "thu-10", label: "Sherif Hamdy ElGohary\nSec 01 · Online" }
+        ],
+        "sch201": [
+            { slotId: "sun-8", label: "Loubna Abdeltawab\nSec 01 · F29-B4" }
+        ],
+        "sch244": [
+            { slotId: "wed-14", label: "Hassan Darwish\nSec 01 · F29-B4" }
+        ],
+        "sch258": [
+            { slotId: "tue-18", label: "Samy Ahmed\nSec 01 · Online" }
+        ],
+        "sch260": [
+            { slotId: "tue-10", label: "Ahmed Hamdy\nSec 01 · F30-B4" },
+            { slotId: "tue-12", label: "Ahmed Hamdy\nSec 02 · F012-E" }
+        ],
+        "sch261": [
+            { slotId: "wed-10", label: "Hassan Darwish\nSec 01 · F25-B4" }
+        ],
+        "sch262": [
+            { slotId: "tue-10", label: "Sherif Hamdy ElGohary\nSec 01 · G009-B" }
+        ],
+        "sch263": [
+            { slotId: "mon-8", label: "TBA\nSec 01 · G008-B" }
+        ],
+        "sch264": [
+            { slotId: "tue-12", label: "Sherif Hamdy ElGohary\nSec 01 · G018-B" }
+        ],
+        "sch266": [
+            { slotId: "thu-10", label: "Ahmed Hamdy\nSec 01 · Online" }
+        ],
+        "sch273": [
+            { slotId: "tue-10", label: "Nashwa Abdel Tawab\nSec 01 · F32-B4" }
+        ],
+        "sch275": [
+            { slotId: "sun-10", label: "Hassan Darwish\nSec 01 · G005-C" }
+        ],
+        "sch277": [
+            { slotId: "tue-12", label: "Nashwa Abdel Tawab\nSec 01 · G008-B" }
+        ],
+        "sch299": [
+            { slotId: "mon-14", label: "Elhassan Elsabry\nSec 01 · F29-B4" }
+        ]
     };
 
     const slots = document.querySelectorAll('.time-slot');
@@ -46,7 +157,7 @@
         card.appendChild(removeBtn);
 
         card.addEventListener('click', function (e) {
-            if (activeCardId === this.id) clearHighlights();
+            if (activeCardId === this.id) clearHighlights(); 
             else highlightValidSlots(this.id);
         });
 
@@ -90,25 +201,22 @@
         document.querySelectorAll('.time-slot .subject-card').forEach(card => returnCardToPool(card));
     });
 
-    // --- Export as Image Logic ---
     document.getElementById('export-btn').addEventListener('click', () => {
         const captureArea = document.getElementById('schedule-capture-area');
-
-        // Hide remove buttons temporally so they don't appear in the image
+        
         const removeBtns = document.querySelectorAll('.remove-btn');
         removeBtns.forEach(btn => btn.style.display = 'none');
-
-        // Save the original box-shadow to remove it during capture for a cleaner image edge
+        
         const originalShadow = captureArea.style.boxShadow;
         captureArea.style.boxShadow = 'none';
 
         html2canvas(captureArea, {
-            scale: 2, // High resolution
+            scale: 2, 
             backgroundColor: '#ffffff'
         }).then(canvas => {
             captureArea.style.boxShadow = originalShadow;
-            removeBtns.forEach(btn => btn.style.display = ''); // Restore buttons
-
+            removeBtns.forEach(btn => btn.style.display = ''); 
+            
             const link = document.createElement('a');
             link.download = 'My_Semester_Schedule.png';
             link.href = canvas.toDataURL('image/png');
@@ -143,7 +251,7 @@
             if (slot) {
                 const previewEl = document.createElement('div');
                 previewEl.className = 'slot-preview';
-
+                
                 if (labels.length > 2) {
                     previewEl.textContent = labels[0] + `\n(+${labels.length - 1} More)`;
                 } else {
@@ -154,7 +262,7 @@
 
                 if (!hasCard) slot.classList.add('allowed-empty');
                 else slot.classList.add('allowed-taken');
-
+                
                 slot.appendChild(previewEl);
             }
         }
@@ -195,20 +303,20 @@
         });
     });
 
-    document.addEventListener('dragover', function (e) {
+    document.addEventListener('dragover', function(e) {
         if (e.target.closest('.pool-container')) {
             e.preventDefault();
             e.target.closest('.pool-container').classList.add('drag-over-pool');
         }
     });
 
-    document.addEventListener('dragleave', function (e) {
+    document.addEventListener('dragleave', function(e) {
         if (e.target.closest('.pool-container')) {
             e.target.closest('.pool-container').classList.remove('drag-over-pool');
         }
     });
 
-    document.addEventListener('drop', function (e) {
+    document.addEventListener('drop', function(e) {
         const pool = e.target.closest('.pool-container');
         if (pool) {
             pool.classList.remove('drag-over-pool');
@@ -222,10 +330,9 @@
         }
     });
 
-    // Modal Logic
     const customModal = document.getElementById('custom-modal');
     document.getElementById('add-custom-btn').addEventListener('click', () => customModal.style.display = 'flex');
-
+    
     document.getElementById('cc-cancel').addEventListener('click', () => {
         customModal.style.display = 'none';
         document.getElementById('custom-form').reset();
@@ -233,12 +340,14 @@
 
     document.getElementById('custom-form').addEventListener('submit', (e) => {
         e.preventDefault();
-
+        
         const name = document.getElementById('cc-name').value;
         const code = document.getElementById('cc-code').value || 'CUSTOM';
+        const type = document.getElementById('cc-type').value;
         const instructor = document.getElementById('cc-instructor').value || 'TBA';
-        const slotsSelect = document.getElementById('cc-slots');
-        const selectedSlots = Array.from(slotsSelect.selectedOptions).map(opt => opt.value);
+        
+        const checkedSlots = document.querySelectorAll('input[name="cc-slot"]:checked');
+        const selectedSlots = Array.from(checkedSlots).map(cb => cb.value);
 
         if (!name || selectedSlots.length === 0) return;
 
@@ -254,9 +363,9 @@
         card.draggable = true;
         card.id = newId;
         card.dataset.default = instructor;
-
+        
         card.innerHTML = `
-            <div class="card-header"><span class="code">${code}</span><span class="type">Custom</span></div>
+            <div class="card-header"><span class="code">${code}</span><span class="type">${type}</span></div>
             <div class="title">${name}</div>
             <div class="instructor">${instructor}</div>
         `;
@@ -264,7 +373,6 @@
         bindCardEvents(card);
         document.getElementById('custom-pool').appendChild(card);
 
-        // Auto-expand Custom Courses column if it's currently collapsed
         const customCol = document.getElementById('custom-pool').closest('.pool-category');
         if (customCol.classList.contains('collapsed')) {
             customCol.classList.remove('collapsed');
