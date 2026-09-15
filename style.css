@@ -283,3 +283,39 @@ header {
 .btn-cancel:hover { background: #dee2e6; }
 .btn-submit { background: #0d6efd; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: 600; }
 .btn-submit:hover { background: #0b5ed7; }
+
+/* Developer Credit Styling */
+.dev-credit {
+    font-weight: 500;
+    margin-left: 4px;
+    color: #868e96;
+}
+
+.dev-credit a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.dev-credit a:hover {
+    color: #0b5ed7;
+    text-decoration: underline;
+}
+
+/* General Note Styling */
+.general-note {
+    font-size: 11px;
+    color: #055160;
+    background-color: #cff4fc;
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 8px;
+    border: 1px solid #b6effb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.general-note strong {
+    color: #04414d;
+}
