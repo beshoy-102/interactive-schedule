@@ -29,7 +29,6 @@ header {
 
 .header-titles { text-align: left; }
 
-/* The new alignment fix */
 .title-row {
     display: flex;
     align-items: baseline;
@@ -61,7 +60,7 @@ header {
 
 /* Developer Credit Styling */
 .dev-credit {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
     color: #adb5bd;
     margin-bottom: 0;
@@ -81,12 +80,12 @@ header {
 
 .header-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
-.reset-btn, .add-btn, .export-btn {
+.reset-btn, .add-btn, .export-btn, .save-btn, .load-btn {
     border: none;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
@@ -99,6 +98,12 @@ header {
 
 .add-btn { background-color: #0d6efd; color: white; box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2); }
 .add-btn:hover { background-color: #0b5ed7; }
+
+.save-btn { background-color: #6f42c1; color: white; box-shadow: 0 2px 4px rgba(111, 66, 193, 0.2); }
+.save-btn:hover { background-color: #59359a; }
+
+.load-btn { background-color: #fd7e14; color: white; box-shadow: 0 2px 4px rgba(253, 126, 20, 0.2); }
+.load-btn:hover { background-color: #e86e04; }
 
 .export-btn { background-color: #198754; color: white; box-shadow: 0 2px 4px rgba(25, 135, 84, 0.2); }
 .export-btn:hover { background-color: #157347; }
