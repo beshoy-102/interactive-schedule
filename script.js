@@ -145,6 +145,116 @@ document.addEventListener('DOMContentLoaded', () => {
     let draggedCard = null;
     let activeCardId = null;
 
+    // --- State Management (Auto-Save & Load) ---
+    function saveState() {
+        const customCourses = [];
+        document.querySelectorAll('.custom-card').forEach(card => {
+            customCourses.push({
+                id: card.id,
+                code: card.querySelector('.code').textContent,
+                type: card.querySelector('.type').textContent,
+                title: card.querySelector('.title').textContent,
+                instructor: card.dataset.default,
+                slots: validOptions[card.id].map(opt => opt.slotId)
+            });
+        });
+
+        const placements = {};
+        slots.forEach(slot => {
+            const card = slot.querySelector('.subject-card');
+            if (card) {
+                placements[slot.dataset.slotId] = card.id;
+            }
+        });
+
+        const data = { customCourses, placements };
+        localStorage.setItem('scheduleData', JSON.stringify(data));
+        return data;
+    }
+
+    function loadState(data) {
+        if (!data) return;
+        
+        // 1. Reset current schedule back to pools without triggering save
+        document.querySelectorAll('.time-slot .subject-card').forEach(card => {
+            const instDiv = card.querySelector('.instructor');
+            if (instDiv && card.dataset.default) instDiv.textContent = card.dataset.default;
+            
+            if (card.id.startsWith('custom-')) document.getElementById('custom-pool').appendChild(card);
+            else if (card.id.startsWith('sch')) {
+                if (card.classList.contains('req-course')) document.getElementById('sch-req-pool').appendChild(card);
+                else document.getElementById('sch-elec-pool').appendChild(card);
+            } else if (card.id.includes('lec')) document.getElementById('lectures-pool').appendChild(card);
+            else document.getElementById('labs-pool').appendChild(card);
+        });
+        clearHighlights();
+        
+        // 2. Clear old custom courses
+        document.querySelectorAll('.custom-card').forEach(card => {
+            delete validOptions[card.id];
+            card.remove();
+        });
+
+        // 3. Rebuild custom courses
+        if (data.customCourses) {
+            let maxCustomId = 0;
+            data.customCourses.forEach(cc => {
+                validOptions[cc.id] = cc.slots.map(slotId => ({
+                    slotId: slotId,
+                    label: cc.instructor
+                }));
+
+                const card = document.createElement('div');
+                card.className = 'subject-card custom-card';
+                card.draggable = true;
+                card.id = cc.id;
+                card.dataset.default = cc.instructor;
+                
+                card.innerHTML = `
+                    <div class="card-header"><span class="code">${cc.code}</span><span class="type">${cc.type}</span></div>
+                    <div class="title">${cc.title}</div>
+                    <div class="instructor">${cc.instructor}</div>
+                `;
+
+                bindCardEvents(card);
+                document.getElementById('custom-pool').appendChild(card);
+                
+                const idNum = parseInt(cc.id.split('-')[1]);
+                if (idNum > maxCustomId) maxCustomId = idNum;
+            });
+            customIdCounter = maxCustomId + 1;
+        }
+
+        // 4. Restore placements into slots
+        if (data.placements) {
+            for (const [slotId, cardId] of Object.entries(data.placements)) {
+                const slot = document.querySelector(`.time-slot[data-slot-id="${slotId}"]`);
+                const card = document.getElementById(cardId);
+                
+                if (slot && card) {
+                    const options = validOptions[cardId] || [];
+                    const chosenOpt = options.find(opt => opt.slotId === slotId);
+                    if (chosenOpt) {
+                        const instDiv = card.querySelector('.instructor');
+                        if (instDiv) instDiv.textContent = chosenOpt.label.split('\n')[0];
+                    }
+                    slot.appendChild(card);
+                }
+            }
+        }
+    }
+
+    // Load initial state on startup
+    const savedData = localStorage.getItem('scheduleData');
+    if (savedData) {
+        try {
+            loadState(JSON.parse(savedData));
+        } catch (e) {
+            console.error("Failed to parse local storage data.");
+        }
+    }
+    // ------------------------------------------
+
     function bindCardEvents(card) {
         const removeBtn = document.createElement('span');
         removeBtn.className = 'remove-btn';
@@ -153,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         removeBtn.onclick = (e) => {
             e.stopPropagation();
             returnCardToPool(card);
+            saveState(); // Auto-save after removal
         };
         card.appendChild(removeBtn);
 
@@ -199,7 +310,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('reset-btn').addEventListener('click', () => {
         document.querySelectorAll('.time-slot .subject-card').forEach(card => returnCardToPool(card));
+        saveState(); // Auto-save after reset
     });
+
+    // --- Save and Load Button Logic ---
+    document.getElementById('save-btn').addEventListener('click', () => {
+        const data = saveState();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "DSAI_Schedule_Backup.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    });
+
+    document.getElementById('load-btn').addEventListener('click', () => {
+        document.getElementById('file-input').click();
+    });
+
+    document.getElementById('file-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                loadState(data);
+                saveState(); // Commit to local storage after loading from file
+            } catch (err) {
+                alert("Invalid file format!");
+            }
+        };
+        reader.readAsText(file);
+        this.value = ''; // Reset input to allow reloading the same file if needed
+    });
+    // -----------------------------------
 
     document.getElementById('export-btn').addEventListener('click', () => {
         const captureArea = document.getElementById('schedule-capture-area');
@@ -299,6 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 this.appendChild(draggedCard);
                 clearHighlights();
+                saveState(); // Auto-save after drop
             }
         });
     });
@@ -320,7 +467,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const pool = e.target.closest('.pool-container');
         if (pool) {
             pool.classList.remove('drag-over-pool');
-            if (draggedCard) returnCardToPool(draggedCard);
+            if (draggedCard) {
+                returnCardToPool(draggedCard);
+                saveState(); // Auto-save after dropping back to pool
+            }
         }
     });
 
@@ -380,5 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('custom-form').reset();
         customModal.style.display = 'none';
+        saveState(); // Auto-save after creating custom course
     });
 });
